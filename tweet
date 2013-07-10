@@ -1,0 +1,16 @@
+#!/usr/bin/env python
+
+import sys
+import tweepy
+from config import dotfile_path
+
+def unpack_dotfile():
+  with open(dotfile_path) as fd:
+    keys = [k.strip('\n') for k in fd.readlines()]
+    return keys[0], keys[1], keys[2], keys[3]
+
+CONSUMER_KEY, CONSUMER_SECRET, ACCESS_KEY, ACCESS_SECRET = unpack_dotfile()
+auth = tweepy.OAuthHandler(CONSUMER_KEY, CONSUMER_SECRET)
+auth.set_access_token(ACCESS_KEY, ACCESS_SECRET)
+api = tweepy.API(auth)
+api.update_status(sys.argv[1])
